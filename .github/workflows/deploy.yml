@@ -3,7 +3,7 @@ name: Deploy to AEM Edge Delivery
 on:
   push:
     branches:
-      - main  # Adjust if you're deploying from another branch
+      - main
 
 jobs:
   deploy:
@@ -22,14 +22,12 @@ jobs:
         run: npm ci
 
       - name: Install Helix CLI
-        run: npm install -g @adobe/helix-cli
+        run: npm install -g @adobe/helix-cli@<specific-version>
+
+      - name: Verify Helix CLI Installation
+        run: |
+          hlx --version
+          hlx help
 
       - name: Deploy to AEM Live
         run: hlx deploy
-
-      - name: Create GitHub Deployment entry
-        uses: bobheadxi/deployments@v1
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: production
